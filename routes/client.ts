@@ -1,0 +1,1 @@
+export const CLIENT_HOME_PAGE="/client"
