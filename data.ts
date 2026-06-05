@@ -4,9 +4,14 @@ import {
   Search,
   House,
   Megaphone,
-  Bell
+  Bell,
+  Camera,
+  Users,
+  BookUser,
+  UserRoundKey,
+  Package,
 } from "lucide-react";
-export const sidebarClientData = [
+export const sidebarData = [
   {
     module: "attendance",
     subModules: [
@@ -55,16 +60,26 @@ export const sidebarClientData = [
         icon: Megaphone,
         path: "/client/customer/alert",
       },
+      {
+        name: "customer",
+        icon: Users,
+        path: "/client/customer",
+      },
     ],
   },
-   {
+  {
     module: "fire",
     subModules: [
       {
         name: "alert",
         icon: Megaphone,
         path: "/client/fire/alert",
-      }
+      },
+      {
+        name: "dashboard",
+        icon: LayoutDashboard,
+        path: "/client/fire/dashboard",
+      },
     ],
   },
   {
@@ -75,6 +90,66 @@ export const sidebarClientData = [
         icon: Bell,
         path: "/client/settings/notification",
       },
+      {
+        name: "camera",
+        icon: Camera,
+        path: "/client/settings/camera",
+      },
+    ],
+  },
+  {
+    module: "vehicle",
+    subModules: [
+      {
+        name: "dashboard",
+        icon: LayoutDashboard,
+        path: "/client/vehicle/dashboard",
+      },
+      {
+        name: "vehicle logs",
+        icon: FileChartColumn,
+        path: "/client/vehicle/vehicle-logs",
+      },
+    ],
+  },
+  {
+    module: "crowd",
+    subModules: [
+      {
+        name: "dashboard",
+        icon: LayoutDashboard,
+        path: "/client/crowd/dashboard",
+      },
+      {
+        name: "people counting",
+        icon: Users,
+        path: "/client/crowd/people-counting",
+      },
+    ],
+  },
+  {
+    module: "admin",
+    subModules: [
+      {
+        name: "dashboard",
+        icon: LayoutDashboard,
+        path: "/admin/dashboard",
+      },
+      {
+        name: "client list",
+        icon: BookUser,
+        path: "/admin/client-list",
+      },
+      {
+        name: "role management",
+        icon: UserRoundKey,
+        path: "/admin/role-management",
+      },
+      {
+        name:"module management",
+        icon:Package,
+        path:"/admin/module-management"
+      }
     ],
   },
 ];

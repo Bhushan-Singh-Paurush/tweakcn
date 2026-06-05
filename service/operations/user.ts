@@ -3,12 +3,12 @@ import { GET_USERS } from "../apis"
 
 
 
-export const fetchUser=async(search:string)=>{
+export const fetchUsers=async():Promise<UserResponse>=>{
        try {
-           const{data:response}=await apiConnector(`${GET_USERS}?search=${search}`,"GET")
+           const{data:response}=await apiConnector(`${GET_USERS}`,"GET")
 
            return response
        } catch (error) {
-          console.log(error)
+          throw error
        }
 }

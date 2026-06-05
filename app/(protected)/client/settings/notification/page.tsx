@@ -33,7 +33,6 @@ import {
 import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
 import Image from "next/image"
-import { useAppSelector } from "@/hooks/reduxHook"
 import { getNotifications } from "@/service/operations/notifications"
 import Link from "next/link"
 
@@ -272,7 +271,7 @@ export default function NotificationPage() {
     }
   
 
-  },[])
+  },[notifications])
 
   return (
     <div className="py-6 px-1 flex flex-col gap-6 max-w-7xl mx-auto pb-16">

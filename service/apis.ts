@@ -19,6 +19,8 @@ export const GET_SECURITY_PERSON=notificationBaseUrl + "/securityPerson"
 
 export const SEND_NOTIFICATION=notificationBaseUrl + "/notification/send-notification"
 
-export const GET_USERS=attendanceBaseUrl + "/user"
+export const GET_USERS=authBaseUrl + "/user"
 
 export const LOGOUT=authBaseUrl + "/auth/logout"
+
+export const CREATE_MODULE=authBaseUrl + "/module"

@@ -1,7 +1,8 @@
 "use client";
 
 import { sidebarContext } from "@/context/sidebar-context";
-import { sidebarClientData } from "@/data";
+import { sidebarData } from "@/data";
+
 import { useAppSelector } from "@/hooks/reduxHook";
 import { House } from "lucide-react";
 import Link from "next/link";
@@ -24,6 +25,8 @@ const Sidebar = () => {
 
   if(!isMounted)
     return null;
+
+
   return (
     <div
       className={`${open ? "w-[250px]" : "w-0"} overflow-x-hidden transition-all duration-200`}
@@ -38,15 +41,16 @@ const Sidebar = () => {
       </div>
 
       <div className=" p-4 flex flex-col gap-4 text-sm">
-        <div
+        {user?.role=="client" && <Link
+          href={"/client"}
           className={`flex gap-2 capitalize items-center p-1 rounded-sm ${checkPath("/client") ? "bg-primary" : "hover:bg-secondary transition-all duration-100"}`}
         >
           <House className=" w-4" />
           Home
-        </div>
-        {sidebarClientData.length > 0 &&
+        </Link>}
+        {sidebarData.length > 0 &&
           user?.modulesDetails  &&
-          sidebarClientData.map((ele, index1) => {
+          sidebarData.map((ele, index1) => {
             if (
               user?.modulesDetails.some(
                 (value) => value.module_name === ele.module,

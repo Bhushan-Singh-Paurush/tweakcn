@@ -13,7 +13,7 @@ interface User{
     email:string,
     logo?:string,
     _id:string,
-    role:["client","admin"],
+    role:"client" |"admin",
     modulesDetails:Module[]
 }
 
