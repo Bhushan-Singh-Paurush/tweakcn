@@ -16,7 +16,6 @@ import {
   ArrowLeft,
   Plus,
   Mail,
-  Check,
   X,
   Camera,
   Clock,

@@ -1,6 +1,5 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { fetchUsers } from '@/service/operations/user'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Field, FieldLabel, FieldError } from '@/components/ui/field'
@@ -31,8 +30,7 @@ const ClientListPage = () => {
   const loadUsers = async () => {
     setIsLoading(true)
     try {
-      const res = await fetchUsers()
-      setAllUsers(res.data || [])
+      setAllUsers([])
     } catch (error) {
       console.error(error)
       toast.error('Failed to load clients')
