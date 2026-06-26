@@ -9,12 +9,12 @@ export default function ProtectedLaoyout({
   return (
    
       
-      <div className="flex">
+      <div className="flex relative">
       
       
       <Sidebar />
 
-      <div className=" w-full px-8 ">
+      <div className=" w-full px-8  ">
         <Topbar />
         {children}
       </div>

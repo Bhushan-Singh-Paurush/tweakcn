@@ -41,7 +41,7 @@ export default function RootLayout({
         inter.variable,
       )}
     >
-      <body className="min-h-full bg-background ">
+      <body className="min-h-full bg-background">
         <Providers>
           {children}
         </Providers>

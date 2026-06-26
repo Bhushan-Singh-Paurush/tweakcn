@@ -3,9 +3,9 @@ import { GET_NOTIFICATION, GET_SECURITY_PERSON, SEND_NOTIFICATION } from "../api
 
 
 
-export async function getNotifications() {
+export async function getNotifications(page:number,limit:number) {
     try {
-        const{data:response}=await apiConnector(`${GET_NOTIFICATION}`,"GET")
+        const{data:response}=await apiConnector(`${GET_NOTIFICATION}?page=${page}&&limit=${limit}`,"GET")
 
         return response
     } catch (error) {

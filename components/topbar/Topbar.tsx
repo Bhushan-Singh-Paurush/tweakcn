@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import {PanelRightOpen} from "lucide-react"
 import { sidebarContext } from '@/context/sidebar-context'
 import ProfileInfo from './ProficeInfo'
+import ThemeSwitcher from './ThemeSwitcher'
 const Topbar = () => {
   const{setOpen,open}=useContext(sidebarContext)
   return (
@@ -13,7 +14,12 @@ const Topbar = () => {
              <div className='w-px h-[20px] bg-border'></div>
         </div>
 
-        <div><ProfileInfo/></div>
+
+        
+        <div className=' flex items-center gap-4'>
+          <ThemeSwitcher/>
+          <ProfileInfo/>
+          </div>
     </div>
   )
 }

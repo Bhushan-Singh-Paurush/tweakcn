@@ -35,6 +35,7 @@ import { Toaster } from "@/components/ui/sonner"
 import Image from "next/image"
 import { getNotifications } from "@/service/operations/notifications"
 import Link from "next/link"
+import Modal from "@/components/practice/modal"
 
 // Type Definitions
 interface NotificationData {
@@ -108,8 +109,8 @@ export default function NotificationPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedAlert, setSelectedAlert] = useState<NotificationItem | null>(null)
-  
-  // Track mock API state
+  const [page,setPage]=useState<number>(0)
+ 
   const [loadingStates, setLoadingStates] = useState<Record<string, "approving" | "dismissing" | null>>({})
 
   // Format Helper functions
@@ -253,28 +254,56 @@ export default function NotificationPage() {
         }
     }
   }
- 
+
+useEffect(() => {
+    const calculateScroll = () => {
+      const currentScroll = window.scrollY;
+      const totalHeight = document.documentElement.scrollHeight; // Recalculated live
+      const viewportHeight = window.innerHeight; // Recalculated live
+
+      const maxScrollableDistance = totalHeight - viewportHeight;
+
+      if (maxScrollableDistance > 0) {
+        const percentage = (currentScroll / maxScrollableDistance) * 100;
+       
+       
+        if(percentage>90)
+        setPage((pre)=>pre+1);
+      }
+    };
+
+    // Recalculate on BOTH scroll and window resize
+    window.addEventListener("scroll", calculateScroll);
+
+    // Initial calculation on mount
+    calculateScroll();
+
+    return () => {
+      window.removeEventListener("scroll", calculateScroll);
+    
+    };
+  }, []);
+
 
   useEffect(()=>{
    
     async function fetchNotifications() {
       try {
-        const result=await getNotifications()
+        const result=await getNotifications(page,10)
 
-        setNotifications(result.data)
+        setNotifications((pre)=>([...pre,...result.data]))
       } catch (error) {
         console.log(error)
       }
     } 
-    if(notifications.length === 0){
+   
         fetchNotifications();
-    }
   
 
-  },[notifications])
+  },[page])
 
   return (
-    <div className="py-6 px-1 flex flex-col gap-6 max-w-7xl mx-auto pb-16">
+    <div className=" py-6 px-1 flex flex-col gap-6 max-w-7xl mx-auto pb-16">
       <Toaster position="bottom-right" />
       
       {/* Header Area */}
@@ -735,6 +764,7 @@ export default function NotificationPage() {
           </div>
         </div>
       )}
-    </div>
+      {/* <Modal heading="Delete" subHeading="Are yu sure you want to delete this" cancel={()=>{}} submit={()=>{}}/>*/}
+    </div> 
   )
 }

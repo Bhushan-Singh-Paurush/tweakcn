@@ -24,3 +24,5 @@ export const GET_USERS=authBaseUrl + "/user"
 export const LOGOUT=authBaseUrl + "/auth/logout"
 
 export const CREATE_MODULE=authBaseUrl + "/module"
+
+export const SEARCH_USER = attendanceBaseUrl + "/user"

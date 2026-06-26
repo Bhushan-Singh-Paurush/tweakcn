@@ -35,6 +35,7 @@ import { Spinner } from "./ui/spinner";
 import { useRouter } from "next/navigation";
 import { addUser } from "@/slices/user";
 import { useAppDispatch } from "@/hooks/reduxHook";
+import { motion, Variants } from "framer-motion";
 
 export const loginSchema = z.object({
   email: z.email({ message: "Your email is invalid." }),
@@ -44,7 +45,6 @@ export const loginSchema = z.object({
 
 export function LoginForm({
   className,
-  ...props
 }: React.ComponentProps<"div">) {
   const {
     register,
@@ -65,6 +65,23 @@ export function LoginForm({
   const [isPending, setIsPending] = useState(false);
   const route = useRouter();
   const dispatch=useAppDispatch()
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { 
+        delayChildren: 0.8,
+        staggerChildren: 0.1 
+      }
+    }
+  };
+
+  const itemVariants:Variants  = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+  };
+
   async function loginSubmit() {
     setIsPending(true);
     try {
@@ -102,7 +119,12 @@ export function LoginForm({
 
   if (step === 2)
     return (
-      <div className={cn("flex flex-col gap-6", className)}>
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className={cn("flex flex-col gap-6", className)}
+      >
         <Card className="flex flex-col gap-6">
           <CardHeader>
             <CardTitle>Verify your login</CardTitle>
@@ -119,75 +141,86 @@ export function LoginForm({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Field>
-              <div className="flex items-center justify-between">
-                <FieldLabel htmlFor="otp-verification">
-                  Verification code
-                </FieldLabel>
-                <Button
-                  variant="outline"
-                  size="xs"
-                  onClick={() => {
-                    setOtp("");loginSubmit();
-                  }}
-                  disabled={isPending}
-                >
-                  <RefreshCwIcon />
-                  Resend Code
-                </Button>
-              </div>
-              <div className=" flex items-center justify-center my-4">
-                <InputOTP
-                  value={otp}
-                  maxLength={6}
-                  id="otp-verification"
-                  onChange={(value) => setOtp(value)}
-                  required
-                >
-                  <InputOTPGroup className="*:data-[slot=input-otp-slot]:h-12 *:data-[slot=input-otp-slot]:w-11 *:data-[slot=input-otp-slot]:text-xl">
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup className="*:data-[slot=input-otp-slot]:h-12 *:data-[slot=input-otp-slot]:w-11 *:data-[slot=input-otp-slot]:text-xl">
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-              </div>
-              <FieldDescription>
-                <a href="#">I no longer have access to this email address.</a>
-              </FieldDescription>
-            </Field>
+            <motion.div variants={containerVariants} initial="hidden" animate="show">
+              <motion.div variants={itemVariants}>
+                <Field>
+                  <div className="flex items-center justify-between">
+                    <FieldLabel htmlFor="otp-verification">
+                      Verification code
+                    </FieldLabel>
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      onClick={() => {
+                        setOtp("");loginSubmit();
+                      }}
+                      disabled={isPending}
+                    >
+                      <RefreshCwIcon />
+                      Resend Code
+                    </Button>
+                  </div>
+                  <div className=" flex items-center justify-center my-4">
+                    <InputOTP
+                      value={otp}
+                      maxLength={6}
+                      id="otp-verification"
+                      onChange={(value) => setOtp(value)}
+                      required
+                    >
+                      <InputOTPGroup className="*:data-[slot=input-otp-slot]:h-12 *:data-[slot=input-otp-slot]:w-11 *:data-[slot=input-otp-slot]:text-xl">
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup className="*:data-[slot=input-otp-slot]:h-12 *:data-[slot=input-otp-slot]:w-11 *:data-[slot=input-otp-slot]:text-xl">
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </div>
+                  <FieldDescription>
+                    <a href="#">I no longer have access to this email address.</a>
+                  </FieldDescription>
+                </Field>
+              </motion.div>
+            </motion.div>
           </CardContent>
           <CardFooter>
-            <Field>
-              <Button type="submit" onClick={() => submit()} className="w-full">
-                Verify
-              </Button>
-              <div className="text-sm text-muted-foreground">
-                Having trouble signing in?{" "}
-                <a
-                  href="#"
-                  className="underline underline-offset-4 transition-colors hover:text-primary"
-                >
-                  Contact support
-                </a>
-              </div>
-            </Field>
+            <motion.div variants={itemVariants} initial="hidden" animate="show" className="w-full">
+              <Field>
+                <Button type="submit" onClick={() => submit()} className="w-full">
+                  Verify
+                </Button>
+                <div className="text-sm text-muted-foreground">
+                  Having trouble signing in?{" "}
+                  <a
+                    href="#"
+                    className="underline underline-offset-4 transition-colors hover:text-primary"
+                  >
+                    Contact support
+                  </a>
+                </div>
+              </Field>
+            </motion.div>
           </CardFooter>
         </Card>
         <FieldDescription className="px-6 text-center">
           By clicking continue, you agree to our{" "}
           <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
         </FieldDescription>
-      </div>
+      </motion.div>
     );
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <motion.div 
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className={cn("flex flex-col gap-6", className)} 
+    >
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
@@ -195,82 +228,90 @@ export function LoginForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(loginSubmit)}>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="text"
-                  placeholder="m@example.com"
-                  {...register("email")}
-                  className={cn("", {
-                    "border-destructive ": errors.email,
-                  })}
-                />
-                {errors.email && (
-                  <div className=" text-destructive mt-2 text-sm">
-                    {errors.email.message}
-                  </div>
-                )}
-              </Field>
-              <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="password"
-                  {...register("password")}
-                  className={cn("", {
-                    "border-destructive ": errors.password,
-                  })}
-                />
-                {errors.password && (
-                  <div className=" text-destructive mt-2 text-sm">
-                    {errors.password.message}
-                  </div>
-                )}
-              </Field>
-
-              <div className="flex justify-between">
-                <div className="flex gap-2 items-center">
-                  <Controller
-                    name="isPersist"
-                    control={control}
-                    render={({ field }) => (
-                      <Checkbox
-                        id="isPersist"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
+            <motion.div variants={containerVariants} initial="hidden" animate="show">
+              <FieldGroup>
+                <motion.div variants={itemVariants}>
+                  <Field>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <Input
+                      id="email"
+                      type="text"
+                      placeholder="m@example.com"
+                      {...register("email")}
+                      className={cn("", {
+                        "border-destructive ": errors.email,
+                      })}
+                    />
+                    {errors.email && (
+                      <div className=" text-destructive mt-2 text-sm">
+                        {errors.email.message}
+                      </div>
                     )}
-                  />
+                  </Field>
+                </motion.div>
+                <motion.div variants={itemVariants}>
+                  <Field>
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor="password">Password</FieldLabel>
+                    </div>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="password"
+                      {...register("password")}
+                      className={cn("", {
+                        "border-destructive ": errors.password,
+                      })}
+                    />
+                    {errors.password && (
+                      <div className=" text-destructive mt-2 text-sm">
+                        {errors.password.message}
+                      </div>
+                    )}
+                  </Field>
+                </motion.div>
 
-                  <Label htmlFor="isPersist">Keep Me Signed In</Label>
-                </div>
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-sm text-default-800 dark:text-default-400 leading-6 font-medium"
-                >
-                  Forgot Password?
-                </Link>
-              </div>
+                <motion.div variants={itemVariants} className="flex justify-between">
+                  <div className="flex gap-2 items-center">
+                    <Controller
+                      name="isPersist"
+                      control={control}
+                      render={({ field }) => (
+                        <Checkbox
+                          id="isPersist"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      )}
+                    />
 
-              <Field>
-                <Button
-                  type="submit"
-                  disabled={isPending}
-                  className={`${isPending ? "bg-chart-5" : ""}`}
-                >
-                  {isPending && <Spinner data-icon="inline-start" />}
-                  Login
-                </Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#" className=" text-chart-5 hover:underline ">Sign up</a>
-                </FieldDescription>
-              </Field>
-            </FieldGroup>
+                    <Label htmlFor="isPersist">Keep Me Signed In</Label>
+                  </div>
+                  <Link
+                    href="/auth/forgot-password"
+                    className="text-sm text-default-800 dark:text-default-400 leading-6 font-medium"
+                  >
+                    Forgot Password?
+                  </Link>
+                </motion.div>
+
+                <motion.div variants={itemVariants}>
+                  <Field>
+                    <Button
+                      type="submit"
+                      disabled={isPending}
+                      className={`${isPending ? "bg-chart-5" : ""}`}
+                    >
+                      {isPending && <Spinner data-icon="inline-start" />}
+                      Login
+                    </Button>
+                    <FieldDescription className="text-center">
+                      Don&apos;t have an account? <a href="#" className=" text-chart-5 hover:underline ">Sign up</a>
+                    </FieldDescription>
+                  </Field>
+                </motion.div>
+              </FieldGroup>
+            </motion.div>
           </form>
         </CardContent>
       </Card>
@@ -278,6 +319,6 @@ export function LoginForm({
         By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
         and <a href="#">Privacy Policy</a>.
       </FieldDescription>
-    </div>
+    </motion.div>
   );
 }
